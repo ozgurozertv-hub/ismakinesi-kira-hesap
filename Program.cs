@@ -1,9 +1,60 @@
-﻿namespace IsMakinesiKiraHesap;
+﻿using System.Globalization;
+using System.Text;
 
-class Program
+namespace IsMakinesiKiraHesap;
+
+/// <summary>Programın giriş noktası; kullanıcıyla etkileşimi yönetir.</summary>
+internal class Program
 {
+    /// <summary>Tutarları Türkçe biçimde (9.750,00) yazmak için kültür bilgisi.</summary>
+    private static readonly CultureInfo TrKultur = new("tr-TR");
+
+    /// <summary>Programı başlatır.</summary>
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        // Neden: Türkçe karakterler konsolda bozuk görünmesin
+        Console.OutputEncoding = Encoding.UTF8;
+
+        // TODO: 8. adımda "Yeni hesap?" döngüsü eklenecek
+        TekHesapYap();
+    }
+
+    /// <summary>Kullanıcıdan seçimleri alır, tek bir kira hesabı yapar ve sonucu yazar.</summary>
+    static void TekHesapYap()
+    {
+        MenuYazdir("Makine sınıfı:", KiraKurallari.MakineAdlari);
+        int makineNo = GirdiOkuyucu.SayiOku("Seçiminiz: ", 1, KiraKurallari.MakineAdlari.Count);
+        string makineAdi = KiraKurallari.MakineAdlari[makineNo];
+        decimal gunlukUcret = KiraKurallari.GunlukUcretler[makineAdi];
+
+        int gun = GirdiOkuyucu.SayiOku(
+            $"Gün sayısı ({KiraKurallari.EnAzGun}-{KiraKurallari.EnCokGun}): ",
+            KiraKurallari.EnAzGun,
+            KiraKurallari.EnCokGun);
+
+        MenuYazdir("Sezon:", KiraKurallari.SezonAdlari);
+        int sezonNo = GirdiOkuyucu.SayiOku("Seçiminiz: ", 1, KiraKurallari.SezonAdlari.Count);
+        string sezonAdi = KiraKurallari.SezonAdlari[sezonNo];
+        decimal katsayi = KiraKurallari.SezonKatsayilari[sezonAdi];
+
+        decimal toplam = Hesapla(gunlukUcret, gun, katsayi);
+        Console.WriteLine($"{makineAdi}, {gun} gün, {sezonAdi} → Toplam: {toplam.ToString("N2", TrKultur)} TL");
+    }
+
+    /// <summary>Başlığı ve sözlükteki seçenekleri numaralı liste olarak yazar.</summary>
+    static void MenuYazdir(string baslik, Dictionary<int, string> secenekler)
+    {
+        Console.WriteLine(baslik);
+        foreach (var secenek in secenekler)
+        {
+            Console.WriteLine($"  {secenek.Key}) {secenek.Value}");
+        }
+    }
+
+    /// <summary>Kira ücretini hesaplar.</summary>
+    // İş kuralı: toplam = günlük ücret × gün sayısı × sezon katsayısı
+    static decimal Hesapla(decimal gunlukUcret, int gun, decimal katsayi)
+    {
+        return gunlukUcret * gun * katsayi;
     }
 }
