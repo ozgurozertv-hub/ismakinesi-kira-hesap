@@ -9,14 +9,21 @@ internal class Program
     /// <summary>Tutarları Türkçe biçimde (9.750,00) yazmak için kültür bilgisi.</summary>
     private static readonly CultureInfo TrKultur = new("tr-TR");
 
-    /// <summary>Programı başlatır.</summary>
+    /// <summary>Programı başlatır; kullanıcı istediği sürece yeni hesap yapar.</summary>
     static void Main(string[] args)
     {
         // Neden: Türkçe karakterler konsolda bozuk görünmesin
         Console.OutputEncoding = Encoding.UTF8;
 
-        // TODO: 8. adımda "Yeni hesap?" döngüsü eklenecek
-        TekHesapYap();
+        // Neden do-while: ilk hesap sorulmadan yapılır, sonrakiler kullanıcıya bağlı
+        do
+        {
+            TekHesapYap();
+            Console.WriteLine();
+        }
+        while (GirdiOkuyucu.EvetHayirOku("Yeni hesap? (E/H): "));
+
+        Console.WriteLine("İyi çalışmalar.");
     }
 
     /// <summary>Kullanıcıdan seçimleri alır, tek bir kira hesabı yapar ve sonucu yazar.</summary>
