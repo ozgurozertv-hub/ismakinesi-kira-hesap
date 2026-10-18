@@ -55,6 +55,8 @@ Oranlar kodun içine gömülmez, `Dictionary` içinde tutulur.
 
 ## Plan
 
+Planlanan süreler; tüm iş paketleri tamamlandı.
+
 ```mermaid
 gantt
     title Geliştirme planı (yaklaşık 120 dk)
@@ -64,15 +66,15 @@ gantt
     Analiz              :done, a1, 00:00, 10m
     Plan                :done, a2, after a1, 10m
     Depo ve proje       :done, a3, after a2, 10m
-    README taslağı      :active, a4, after a3, 10m
+    README taslağı      :done, a4, after a3, 10m
     section Kodlama
-    Kurallar            :a5, after a4, 10m
-    Girdi doğrulama     :a6, after a5, 20m
-    Hesaplama           :a7, after a6, 10m
-    Ana döngü           :a8, after a7, 10m
+    Kurallar            :done, a5, after a4, 10m
+    Girdi doğrulama     :done, a6, after a5, 20m
+    Hesaplama           :done, a7, after a6, 10m
+    Ana döngü           :done, a8, after a7, 10m
     section Kapanış
-    Test tablosu        :a9, after a8, 20m
-    README son hâli     :a10, after a9, 10m
+    Test tablosu        :done, a9, after a8, 20m
+    README son hâli     :done, a10, after a9, 10m
 ```
 
 ## Çalıştırma
@@ -81,6 +83,13 @@ gantt
 dotnet run
 ```
 
+## Dosya yapısı
+
+| Dosya | Görevi |
+|---|---|
+| `Program.cs` | Giriş noktası; menüleri yazar, tek hesabı yapar ve "Yeni hesap?" döngüsünü yönetir |
+| `KiraKurallari.cs` | Ücret ve sezon katsayısı sözlükleri ile gün sınırları |
+| `GirdiOkuyucu.cs` | Doğrulanmış sayı ve E/H girişi okur; hatalı girişte soruyu tekrarlar |
 ## Test tablosu
 
 Tüm testler elle, `dotnet run` ile yapıldı.
